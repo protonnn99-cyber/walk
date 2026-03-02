@@ -53,7 +53,6 @@
     .ah{padding:22px 22px 0}
     .at{font-size:1.12rem;font-weight:600;margin-bottom:4px}
     .as{font-size:.92rem;color:var(--tx2);margin-bottom:20px}
-    /* FIXED: Renamed from .ab to .auth-body */
     .auth-body{padding:0 22px 22px}
     .adiv{border:none;border-top:1px solid var(--bd-m);margin:0 0 18px}
     .af{padding:15px 22px;background:var(--bg-s);border-top:1px solid var(--bd-m);text-align:center;font-size:.9rem;color:var(--tx2)}
@@ -129,13 +128,53 @@
     .st{font-size:.8rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--tx3)}
     .sl{font-size:.9rem;color:var(--ac);cursor:pointer}.sl:hover{text-decoration:underline}
 
-    /* Period toggle */
-    .period-row{display:flex;align-items:center;gap:14px;margin-bottom:16px}
-    .ptoggle{display:inline-flex;background:var(--bg-m);border-radius:var(--r);padding:3px;gap:2px}
-    .pb{padding:8px 18px;border-radius:6px;font-size:.9rem;font-weight:500;cursor:pointer;color:var(--tx3);border:none;background:transparent;font-family:var(--font);transition:background .12s,color .12s;user-select:none}
-    .pb.active{background:var(--bg);color:var(--tx);box-shadow:0 1px 3px rgba(0,0,0,.1)}
-    [data-theme="dark"] .pb.active{background:var(--bg-s);box-shadow:0 1px 3px rgba(0,0,0,.3)}
-    .plbl{font-size:.84rem;color:var(--tx3);font-family:var(--mono)}
+    /* Period toggle - VERTICAL STACK (UPDATED) */
+    .period-row {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .ptoggle {
+      display: inline-flex;
+      background: var(--bg-m);
+      border-radius: var(--r);
+      padding: 3px;
+      gap: 2px;
+      width: 100%;
+      max-width: 280px;
+    }
+    .pb {
+      padding: 8px 18px;
+      border-radius: 6px;
+      font-size: .9rem;
+      font-weight: 500;
+      cursor: pointer;
+      color: var(--tx3);
+      border: none;
+      background: transparent;
+      font-family: var(--font);
+      transition: background .12s, color .12s;
+      user-select: none;
+      flex: 1;
+      text-align: center;
+    }
+    .pb.active {
+      background: var(--bg);
+      color: var(--tx);
+      box-shadow: 0 1px 3px rgba(0,0,0,.1);
+    }
+    [data-theme="dark"] .pb.active {
+      background: var(--bg-s);
+      box-shadow: 0 1px 3px rgba(0,0,0,.3);
+    }
+    .plbl {
+      font-size: .84rem;
+      color: var(--tx3);
+      font-family: var(--mono);
+      padding-left: 4px;
+    }
 
     /* Stats */
     .stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-bottom:26px}
@@ -151,7 +190,6 @@
     .lc:hover{border-color:var(--bd);box-shadow:0 1px 4px rgba(0,0,0,.08)}
     @keyframes fadeUp{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
     .ct{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px}
-    /* FIXED: Renamed from .ab to .activity-badge */
     .activity-badge{flex-shrink:0;width:38px;height:38px;border-radius:var(--r);display:flex;align-items:center;justify-content:center}
     .activity-badge.run{background:var(--run-bg);color:var(--run)}.activity-badge.walk{background:var(--walk-bg);color:var(--walk)}.activity-badge svg{width:19px;height:19px}
     .cm{flex:1;min-width:0}
@@ -171,12 +209,25 @@
     .ett{font-size:1rem;font-weight:600;margin-bottom:5px}
     .es{font-size:.9rem;color:var(--tx2);line-height:1.5}
 
-    /* Form */
+    /* Form - UPDATED for date one-liner */
     .fcard{background:var(--bg);border:1px solid var(--bd-m);border-radius:var(--rm);padding:22px;transition:background .2s}
     .fsec{font-size:.78rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--tx3);margin:22px 0 14px;padding-bottom:9px;border-bottom:1px solid var(--bd-m)}
     .fsec:first-child{margin-top:0}
     .frow{display:grid;grid-template-columns:1fr 1fr;gap:13px}
-    @media(max-width:360px){.frow{grid-template-columns:1fr}}
+    /* Date input one-liner fix */
+    .frow .field:first-child input[type="date"] {
+      min-width: 0;
+      width: 100%;
+      font-size: 15px;
+      padding: 11px 8px;
+      white-space: nowrap;
+    }
+    .frow .field:first-child input[type="date"]::-webkit-datetime-edit {
+      line-height: 1.2;
+    }
+    @media(max-width:400px){
+      .frow{grid-template-columns:1fr}
+    }
     .tpick{display:grid;grid-template-columns:1fr 1fr;gap:9px}
     .to{display:flex;align-items:center;justify-content:center;gap:9px;padding:13px;border:1px solid var(--bd);border-radius:var(--r);cursor:pointer;font-size:.97rem;font-weight:500;color:var(--tx2);transition:all .12s;user-select:none;-webkit-user-select:none}
     .to svg{width:19px;height:19px}.to:hover{background:var(--bg-s);color:var(--tx)}
@@ -257,7 +308,6 @@
   </div>
   <div class="auth-card" id="p-in">
     <div class="ah"><p class="at">Sign in to Stride</p><p class="as">Your personal walk &amp; run log</p></div>
-    <!-- FIXED: Changed from class="ab" to class="auth-body" -->
     <div class="auth-body">
       <hr class="adiv">
       <div class="field"><label class="fl">Username</label><input id="si-u" type="text" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="yourname"></div>
@@ -268,7 +318,6 @@
   </div>
   <div class="auth-card hidden" id="p-up">
     <div class="ah"><p class="at">Create your account</p><p class="as">No email — just a username &amp; password</p></div>
-    <!-- FIXED: Changed from class="ab" to class="auth-body" -->
     <div class="auth-body">
       <hr class="adiv">
       <div class="field"><label class="fl">Username <span>(2–20 chars, a-z 0-9 _ -)</span></label><input id="su-u" type="text" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="yourname"></div>
@@ -644,7 +693,6 @@ function buildCard(l,i){
   if(l.dist)ms.push({v:l.dist.toFixed(2)+' km',k:'dist'});
   if(l.dur)ms.push({v:fmtDur(l.dur),k:'time'});
   if(l.elev)ms.push({v:l.elev+' m',k:'elev'});
-  // FIXED: Changed from "ab" to "activity-badge"
   div.innerHTML=`<div class="ct"><div class="activity-badge ${l.type}">${actIcon(l.type)}</div><div class="cm"><div class="cttl">${esc(l.title)}</div><div class="cdate">${fmtDate(l.date)}</div></div><span class="pill ${l.type}">${l.type}</span></div><div class="cms">${ms.map(m=>`<div><div class="mv">${m.v}</div><div class="mk">${m.k}</div></div>`).join('')}</div>${l.notes?`<div class="cnote">${esc(l.notes)}</div>`:''}`;
   div.addEventListener('click',()=>openDetail(l));return div;
 }
