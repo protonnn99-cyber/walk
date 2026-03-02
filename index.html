@@ -430,30 +430,137 @@
         <div class="log-list" id="hlist"></div>
       </div>
 
-      <!-- PROFILE -->
-      <div class="view" id="view-profile">
-        <div class="phero">
-          <div class="pav" id="pav">U</div>
-          <div><div class="pnm" id="pnm">username</div><div class="psub" id="pjnd">joined —</div></div>
-        </div>
-        <div class="sh"><span class="st">All-time stats</span></div>
-        <div class="pstats">
-          <div class="sc"><div class="sl2">Activities</div><div class="sv" id="pacts">0</div></div>
-          <div class="sc"><div class="sl2">km</div><div class="sv" id="pkm">0</div></div>
-          <div class="sc"><div class="sl2">Hours</div><div class="sv" id="phrs">0</div></div>
-        </div>
-        <div class="sh" style="margin-top:6px"><span class="st">Account</span></div>
-        <div class="sblock">
-          <div class="srow"><span>Username</span><span class="sval" id="su">—</span></div>
-          <div class="srow"><span>Activities logged</span><span class="sval" id="sacts">0</span></div>
-          <div class="srow"><span>Member since</span><span class="sval" id="ssince">—</span></div>
-        </div>
-        <div class="sh" style="margin-top:6px"><span class="st">Appearance</span></div>
-        <div class="sblock">
-          <div class="srow"><span>Color theme</span><button class="btn btn-s btn-sm" onclick="toggleTheme()" id="thsettbtn" style="min-width:96px">Dark mode</button></div>
-        </div>
-        <div style="margin-top:16px"><button class="btn btn-d" style="width:100%" onclick="confirmSignOut()">Sign out</button></div>
+<!-- PROFILE -->
+<div class="view" id="view-profile">
+  <div class="phero">
+    <div class="pav" id="pav">U</div>
+    <div><div class="pnm" id="pnm">username</div><div class="psub" id="pjnd">joined —</div></div>
+  </div>
+  
+  <!-- ALL-TIME STATS - HORIZONTAL BAR GRAPH -->
+  <div class="sh"><span class="st">All-time stats</span></div>
+  
+  <div class="stats-bars">
+    <!-- Activities Bar -->
+    <div class="stat-bar-item">
+      <div class="stat-bar-label">
+        <span class="stat-bar-name">Activities</span>
+        <span class="stat-bar-value" id="pacts">0</span>
       </div>
+      <div class="stat-bar-track">
+        <div class="stat-bar-fill activities-fill" id="activities-bar" style="width: 0%"></div>
+      </div>
+    </div>
+    
+    <!-- Distance Bar (km) -->
+    <div class="stat-bar-item">
+      <div class="stat-bar-label">
+        <span class="stat-bar-name">Distance (km)</span>
+        <span class="stat-bar-value" id="pkm">0.0</span>
+      </div>
+      <div class="stat-bar-track">
+        <div class="stat-bar-fill distance-fill" id="distance-bar" style="width: 0%"></div>
+      </div>
+    </div>
+    
+    <!-- Hours Bar -->
+    <div class="stat-bar-item">
+      <div class="stat-bar-label">
+        <span class="stat-bar-name">Hours</span>
+        <span class="stat-bar-value" id="phrs">0.0</span>
+      </div>
+      <div class="stat-bar-track">
+        <div class="stat-bar-fill hours-fill" id="hours-bar" style="width: 0%"></div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="sh" style="margin-top:16px"><span class="st">Account</span></div>
+  <div class="sblock">
+    <div class="srow"><span>Username</span><span class="sval" id="su">—</span></div>
+    <div class="srow"><span>Activities logged</span><span class="sval" id="sacts">0</span></div>
+    <div class="srow"><span>Member since</span><span class="sval" id="ssince">—</span></div>
+  </div>
+  <div class="sh" style="margin-top:6px"><span class="st">Appearance</span></div>
+  <div class="sblock">
+    <div class="srow"><span>Color theme</span><button class="btn btn-s btn-sm" onclick="toggleTheme()" id="thsettbtn" style="min-width:96px">Dark mode</button></div>
+  </div>
+  <div style="margin-top:16px"><button class="btn btn-d" style="width:100%" onclick="confirmSignOut()">Sign out</button></div>
+</div>
+
+/* Horizontal Bar Graph for Profile */
+.stats-bars {
+  background: var(--bg);
+  border: 1px solid var(--bd-m);
+  border-radius: var(--rm);
+  padding: 20px 18px;
+  margin-bottom: 18px;
+}
+
+.stat-bar-item {
+  margin-bottom: 16px;
+}
+
+.stat-bar-item:last-child {
+  margin-bottom: 0;
+}
+
+.stat-bar-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  font-size: 0.9rem;
+}
+
+.stat-bar-name {
+  color: var(--tx2);
+  font-weight: 500;
+}
+
+.stat-bar-value {
+  font-family: var(--mono);
+  font-weight: 600;
+  color: var(--tx);
+}
+
+.stat-bar-track {
+  height: 28px;
+  background: var(--bg-m);
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--bd-m);
+}
+
+.stat-bar-fill {
+  height: 100%;
+  border-radius: 14px;
+  transition: width 0.3s ease;
+}
+
+.activities-fill {
+  background: linear-gradient(90deg, #0969da, #58a6ff);
+}
+
+.distance-fill {
+  background: linear-gradient(90deg, #1a7f37, #56d364);
+}
+
+.hours-fill {
+  background: linear-gradient(90deg, #9a6700, #e3b341);
+}
+
+[data-theme="dark"] .activities-fill {
+  background: linear-gradient(90deg, #58a6ff, #79c0ff);
+}
+
+[data-theme="dark"] .distance-fill {
+  background: linear-gradient(90deg, #56d364, #7ee68a);
+}
+
+[data-theme="dark"] .hours-fill {
+  background: linear-gradient(90deg, #e3b341, #f1c40f);
+}
 
     </div>
   </div>
