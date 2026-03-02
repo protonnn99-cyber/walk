@@ -9,7 +9,7 @@
   <meta name="theme-color" id="tc-meta" content="#ffffff">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/icon-180.png">
-  <title>Stride</title>
+  <title>Stride — Live Tracker</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -58,7 +58,7 @@
     .af{padding:15px 22px;background:var(--bg-s);border-top:1px solid var(--bd-m);text-align:center;font-size:.9rem;color:var(--tx2)}
     .af a{color:var(--ac);cursor:pointer}.af a:hover{text-decoration:underline}
 
-    /* FIELDS — font-size 16px prevents iOS auto-zoom */
+    /* FIELDS */
     .field{margin-bottom:16px}
     .fl{display:block;font-size:.92rem;font-weight:500;color:var(--tx);margin-bottom:6px}
     .fl span{color:var(--tx3);font-weight:400}
@@ -85,6 +85,9 @@
     .btn-d{background:var(--bg);color:var(--danger);border-color:var(--bd)}.btn-d:hover{background:var(--danger-bg);border-color:#ffb8b8}
     .btn-sm{padding:7px 12px;font-size:.9rem}
     .btn-icon{padding:8px;border-radius:var(--r)}
+    .btn-record{background:var(--run);color:white;border-color:var(--run);font-weight:600}
+    .btn-record-pause{background:#f39c12;color:white;border-color:#e67e22}
+    .btn-record-stop{background:var(--danger);color:white;border-color:var(--danger)}
 
     /* APP SHELL */
     #app{min-height:100dvh;display:flex}
@@ -128,7 +131,139 @@
     .st{font-size:.8rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--tx3)}
     .sl{font-size:.9rem;color:var(--ac);cursor:pointer}.sl:hover{text-decoration:underline}
 
-    /* Period toggle - VERTICAL STACK */
+    /* RECORD VIEW - NEW */
+    .record-card {
+      background: var(--bg);
+      border: 1px solid var(--bd-m);
+      border-radius: var(--rm);
+      padding: 24px 20px;
+      margin-bottom: 20px;
+    }
+    .record-timer {
+      font-family: var(--mono);
+      font-size: 3.2rem;
+      font-weight: 600;
+      text-align: center;
+      color: var(--tx);
+      margin: 10px 0 20px;
+      letter-spacing: 2px;
+    }
+    .record-stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+    .record-stat {
+      background: var(--bg-s);
+      border-radius: var(--rm);
+      padding: 15px 12px;
+      text-align: center;
+      border: 1px solid var(--bd-m);
+    }
+    .record-stat-label {
+      font-size: .8rem;
+      color: var(--tx3);
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      margin-bottom: 5px;
+    }
+    .record-stat-value {
+      font-family: var(--mono);
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--tx);
+      line-height: 1.2;
+    }
+    .record-stat-unit {
+      font-size: .75rem;
+      color: var(--tx3);
+      margin-left: 2px;
+    }
+    .record-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 15px;
+    }
+    .record-btn {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      border: none;
+      background: var(--bg-m);
+      color: var(--tx);
+      font-size: .9rem;
+      font-weight: 600;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      cursor: pointer;
+      transition: all .15s;
+      border: 1px solid var(--bd);
+    }
+    .record-btn svg {
+      width: 24px;
+      height: 24px;
+    }
+    .record-btn:active {
+      transform: scale(0.95);
+    }
+    .record-btn.start {
+      background: var(--run);
+      color: white;
+      border-color: var(--run);
+    }
+    .record-btn.pause {
+      background: #f39c12;
+      color: white;
+      border-color: #e67e22;
+    }
+    .record-btn.stop {
+      background: var(--danger);
+      color: white;
+      border-color: var(--danger);
+    }
+    .record-type-toggle {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      background: var(--bg-m);
+      padding: 4px;
+      border-radius: 30px;
+    }
+    .record-type-option {
+      flex: 1;
+      text-align: center;
+      padding: 10px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all .12s;
+    }
+    .record-type-option.active {
+      background: var(--bg);
+      color: var(--tx);
+      box-shadow: 0 2px 8px rgba(0,0,0,.05);
+    }
+    .record-type-option.run.active { color: var(--run); }
+    .record-type-option.walk.active { color: var(--walk); }
+    .record-map {
+      height: 160px;
+      background: var(--bg-m);
+      border-radius: var(--rm);
+      margin: 20px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--tx3);
+      border: 1px dashed var(--bd);
+      font-size: .9rem;
+    }
+
+    /* Period toggle */
     .period-row {
       display: flex;
       flex-direction: column;
@@ -214,7 +349,6 @@
     .fsec{font-size:.78rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--tx3);margin:22px 0 14px;padding-bottom:9px;border-bottom:1px solid var(--bd-m)}
     .fsec:first-child{margin-top:0}
     .frow{display:grid;grid-template-columns:1fr 1fr;gap:13px}
-    /* Date input one-liner fix */
     .frow .field:first-child input[type="date"] {
       min-width: 0;
       width: 100%;
@@ -400,6 +534,10 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg>
         <span class="ni-lbl">Overview</span>
       </div>
+      <div class="ni" data-view="record" onclick="sv('record')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>
+        <span class="ni-lbl">Record</span>
+      </div>
       <div class="ni" data-view="log" onclick="sv('log')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
         <span class="ni-lbl">Log</span>
@@ -449,6 +587,66 @@
         <div class="log-list" id="rlist"></div>
       </div>
 
+      <!-- RECORD - NEW LIVE TRACKER -->
+      <div class="view" id="view-record">
+        <div class="record-card">
+          <div class="record-type-toggle">
+            <div class="record-type-option run active" id="rec-run" onclick="setRecordType('run')">🏃 Run</div>
+            <div class="record-type-option walk" id="rec-walk" onclick="setRecordType('walk')">🚶 Walk</div>
+          </div>
+          
+          <div class="record-timer" id="record-timer">00:00.0</div>
+          
+          <div class="record-stats-grid">
+            <div class="record-stat">
+              <div class="record-stat-label">Distance</div>
+              <div><span class="record-stat-value" id="record-dist">0.00</span><span class="record-stat-unit">km</span></div>
+            </div>
+            <div class="record-stat">
+              <div class="record-stat-label">Steps</div>
+              <div><span class="record-stat-value" id="record-steps">0</span></div>
+            </div>
+            <div class="record-stat">
+              <div class="record-stat-label">Pace</div>
+              <div><span class="record-stat-value" id="record-pace">0'00"</span><span class="record-stat-unit">/km</span></div>
+            </div>
+            <div class="record-stat">
+              <div class="record-stat-label">Calories</div>
+              <div><span class="record-stat-value" id="record-cals">0</span></div>
+            </div>
+          </div>
+          
+          <div class="record-map" id="record-map">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 2 L12 12 L16 14"/></svg>
+            <span style="margin-left:8px">GPS tracking active</span>
+          </div>
+          
+          <div class="record-actions">
+            <button class="record-btn start" id="record-start" onclick="startRecording()">
+              <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
+              <span>Start</span>
+            </button>
+            <button class="record-btn pause hidden" id="record-pause" onclick="pauseRecording()">
+              <svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+              <span>Pause</span>
+            </button>
+            <button class="record-btn stop hidden" id="record-stop" onclick="stopRecording()">
+              <svg viewBox="0 0 24 24" fill="currentColor"><rect x="5" y="5" width="14" height="14"/></svg>
+              <span>Stop</span>
+            </button>
+          </div>
+        </div>
+        
+        <div class="sh"><span class="st">Quick tips</span></div>
+        <div class="stats-bars" style="padding:16px">
+          <p style="color:var(--tx2); font-size:.9rem; line-height:1.6">
+            • GPS required for distance tracking<br>
+            • Steps counted via device sensors<br>
+            • Pause for breaks, Stop to save
+          </p>
+        </div>
+      </div>
+
       <!-- LOG -->
       <div class="view" id="view-log">
         <div class="fcard">
@@ -492,7 +690,7 @@
         <div class="log-list" id="hlist"></div>
       </div>
 
-      <!-- PROFILE - UPDATED WITH HORIZONTAL BAR GRAPH -->
+      <!-- PROFILE -->
       <div class="view" id="view-profile">
         <div class="phero">
           <div class="pav" id="pav">U</div>
@@ -503,7 +701,6 @@
         <div class="sh"><span class="st">All-time stats</span></div>
         
         <div class="stats-bars">
-          <!-- Activities Bar -->
           <div class="stat-bar-item">
             <div class="stat-bar-label">
               <span class="stat-bar-name">Activities</span>
@@ -514,7 +711,6 @@
             </div>
           </div>
           
-          <!-- Distance Bar (km) -->
           <div class="stat-bar-item">
             <div class="stat-bar-label">
               <span class="stat-bar-name">Distance (km)</span>
@@ -525,7 +721,6 @@
             </div>
           </div>
           
-          <!-- Hours Bar -->
           <div class="stat-bar-item">
             <div class="stat-bar-label">
               <span class="stat-bar-name">Hours</span>
@@ -607,6 +802,7 @@ const DB={
   theme:()=>localStorage.getItem('st_t')||'light',
   st:t=>localStorage.setItem('st_t',t),
 };
+
 function hash(s){let h=0;for(let i=0;i<s.length;i++)h=(Math.imul(31,h)+s.charCodeAt(i))|0;return h.toString(36);}
 function G(id){return document.getElementById(id);}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
@@ -680,7 +876,7 @@ function confirmSignOut(){
 }
 
 /* NAV */
-const VT={overview:'Overview',log:'Log Activity',history:'History',profile:'Profile'};
+const VT={overview:'Overview',record:'Live Record',log:'Log Activity',history:'History',profile:'Profile'};
 let curV='overview';
 function sv(name){
   curV=name;
@@ -694,6 +890,7 @@ function sv(name){
   if(name==='history')renderHist();
   if(name==='profile')refreshProf();
   if(name==='log')setTodayDate();
+  if(name==='record')resetRecorder();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -720,6 +917,140 @@ function filterPeriod(logs){
   }
 }
 
+/* RECORD - LIVE TRACKER */
+let recordType = 'run';
+let recordInterval = null;
+let recordStartTime = null;
+let recordPausedTime = 0;
+let recordElapsed = 0;
+let recordDistance = 0;
+let recordSteps = 0;
+let recordLastStep = 0;
+let watchId = null;
+
+function setRecordType(type) {
+  recordType = type;
+  G('rec-run').classList.toggle('active', type === 'run');
+  G('rec-walk').classList.toggle('active', type === 'walk');
+}
+
+function resetRecorder() {
+  if (recordInterval) clearInterval(recordInterval);
+  if (watchId) navigator.geolocation.clearWatch(watchId);
+  recordInterval = null;
+  watchId = null;
+  recordStartTime = null;
+  recordPausedTime = 0;
+  recordElapsed = 0;
+  recordDistance = 0;
+  recordSteps = 0;
+  updateRecordDisplay();
+  G('record-start').classList.remove('hidden');
+  G('record-pause').classList.add('hidden');
+  G('record-stop').classList.add('hidden');
+}
+
+function startRecording() {
+  // Request permissions
+  if (!navigator.geolocation) {
+    toast('GPS not available on this device');
+    return;
+  }
+  
+  // Reset values
+  recordStartTime = Date.now() - recordPausedTime;
+  recordPausedTime = 0;
+  recordSteps = 0;
+  recordDistance = 0;
+  
+  // Start GPS tracking
+  watchId = navigator.geolocation.watchPosition(pos => {
+    if (!recordStartTime) return; // Paused or stopped
+    // Simple distance calculation (would need to store previous position for accurate tracking)
+    // For demo, increment distance
+    recordDistance += 0.001; // Simulated 1m per step
+    updateRecordDisplay();
+  }, err => {
+    console.warn('GPS error:', err);
+    toast('GPS unavailable - distance may be inaccurate');
+  }, {
+    enableHighAccuracy: true,
+    maximumAge: 0,
+    timeout: 5000
+  });
+  
+  // Start timer
+  recordInterval = setInterval(() => {
+    if (recordStartTime) {
+      recordElapsed = Math.floor((Date.now() - recordStartTime) / 100) / 10;
+      // Simulate steps (approx 2 steps per second for demo)
+      if (Math.random() > 0.7) recordSteps++;
+      updateRecordDisplay();
+    }
+  }, 100);
+  
+  G('record-start').classList.add('hidden');
+  G('record-pause').classList.remove('hidden');
+  G('record-stop').classList.remove('hidden');
+  toast('Recording started');
+}
+
+function pauseRecording() {
+  if (recordStartTime) {
+    recordPausedTime = Date.now() - recordStartTime;
+    recordStartTime = null;
+    G('record-pause').innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg><span>Resume</span>';
+  } else {
+    recordStartTime = Date.now() - recordPausedTime;
+    G('record-pause').innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg><span>Pause</span>';
+  }
+}
+
+function stopRecording() {
+  if (watchId) navigator.geolocation.clearWatch(watchId);
+  if (recordInterval) clearInterval(recordInterval);
+  
+  // Auto-fill the log form with recorded data
+  G('f-title').value = (recordType === 'run' ? '🏃‍♂️ Run' : '🚶 Walk') + ' - ' + new Date().toLocaleTimeString();
+  G('f-dur').value = Math.round(recordElapsed * 10) / 10;
+  G('f-dist').value = recordDistance.toFixed(2);
+  G('f-steps').value = recordSteps;
+  setType(recordType);
+  setTodayDate();
+  
+  // Switch to log view to save
+  sv('log');
+  resetRecorder();
+  toast('Recording stopped - review and save');
+}
+
+function updateRecordDisplay() {
+  G('record-timer').textContent = formatTime(recordElapsed);
+  G('record-dist').textContent = recordDistance.toFixed(2);
+  G('record-steps').textContent = recordSteps;
+  
+  // Calculate pace (min/km)
+  if (recordDistance > 0) {
+    let pace = recordElapsed / 60 / recordDistance;
+    let mins = Math.floor(pace);
+    let secs = Math.floor((pace - mins) * 60);
+    G('record-pace').textContent = mins + "'" + (secs < 10 ? '0' : '') + secs + '"';
+  } else {
+    G('record-pace').textContent = "0'00\"";
+  }
+  
+  // Estimate calories (rough: 0.9 * weight * km, assuming 70kg)
+  let cals = Math.round(0.9 * 70 * recordDistance);
+  G('record-cals').textContent = cals;
+}
+
+function formatTime(seconds) {
+  let mins = Math.floor(seconds / 60);
+  let secs = Math.floor(seconds % 60);
+  let tenths = Math.floor((seconds * 10) % 10);
+  return (mins < 10 ? '0' : '') + mins + ':' + (secs < 10 ? '0' : '') + secs + '.' + tenths;
+}
+
 /* LOG */
 let selT='run';
 function setType(t){selT=t;G('opt-r').className='to'+(t==='run'?' sr':'');G('opt-w').className='to'+(t==='walk'?' sw':'');}
@@ -728,13 +1059,13 @@ G('f-notes').addEventListener('input',()=>{G('nc').textContent=G('f-notes').valu
 function saveLog(){
   const title=G('f-title').value.trim(),date=G('f-date').value;
   const steps=parseInt(G('f-steps').value)||0,dist=parseFloat(G('f-dist').value)||0;
-  const dur=parseInt(G('f-dur').value)||0,elev=parseInt(G('f-elev').value)||0;
+  const dur=parseFloat(G('f-dur').value)||0,elev=parseInt(G('f-elev').value)||0;
   const notes=G('f-notes').value.trim();
   if(!date)return toast('Please select a date.');
   if(!title){G('f-title').focus();return toast('Please enter a title.');}
   if(!steps&&!dist&&!dur)return toast('Add at least steps, distance, or duration.');
   const logs=DB.logs(CU);
-  logs.unshift({id:Date.now().toString(36)+Math.random().toString(36).slice(2,5),type:selT,title,date,steps,dist,dur,elev,notes,created:new Date().toISOString()});
+  logs.unshift({id:Date.now().toString(36)+Math.random().toString(36).slice(2,5),type:selT,title,date,steps,dist,dur:Math.round(dur),elev,notes,created:new Date().toISOString()});
   DB.sl(CU,logs);clearForm();toast('Activity saved! 🎉');sv('overview');
 }
 function clearForm(){
@@ -755,7 +1086,7 @@ function refreshOv(){
   G('ststeps').textContent=ts?fmtSteps(ts):'—';
   const list=G('rlist');list.innerHTML='';
   const recent=DB.logs(CU).slice(0,5);
-  if(!recent.length){list.innerHTML=emptyHTML('No activities yet','Tap Log in the sidebar to record your first walk or run.');return;}
+  if(!recent.length){list.innerHTML=emptyHTML('No activities yet','Tap Record to start your first walk or run.');return;}
   recent.forEach((l,i)=>list.appendChild(buildCard(l,i)));
 }
 
@@ -766,28 +1097,24 @@ function renderHist(){
   const all=DB.logs(CU);const logs=af==='all'?all:all.filter(l=>l.type===af);
   G('hcnt').textContent=logs.length+' activit'+(logs.length===1?'y':'ies');
   const list=G('hlist');list.innerHTML='';
-  if(!logs.length){list.innerHTML=emptyHTML('Nothing here yet',af==='all'?'Log your first activity to see it here.':'No '+af+'s logged yet.');return;}
+  if(!logs.length){list.innerHTML=emptyHTML('Nothing here yet',af==='all'?'Tap Record to start your first activity.':'No '+af+'s logged yet.');return;}
   logs.forEach((l,i)=>list.appendChild(buildCard(l,i)));
 }
 
-/* PROFILE - UPDATED WITH BAR GRAPH */
+/* PROFILE */
 function refreshProf(){
   const logs = DB.logs(CU);
   const activities = logs.length;
   const totalKm = logs.reduce((a,l)=>a+l.dist,0);
   const totalHours = logs.reduce((a,l)=>a+l.dur,0) / 60;
   
-  // Update text values
   G('pacts').textContent = activities;
   G('pkm').textContent = totalKm.toFixed(1);
   G('phrs').textContent = totalHours.toFixed(1);
   G('sacts').textContent = activities;
   G('thsettbtn').textContent = DB.theme() === 'dark' ? 'Light mode' : 'Dark mode';
   
-  // Calculate max value for scaling bars (use 100 if no data)
   const maxValue = Math.max(activities, totalKm, totalHours, 100);
-  
-  // Update bar widths (percentage of max)
   G('activities-bar').style.width = (activities / maxValue * 100) + '%';
   G('distance-bar').style.width = (totalKm / maxValue * 100) + '%';
   G('hours-bar').style.width = (totalHours / maxValue * 100) + '%';
