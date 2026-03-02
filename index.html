@@ -53,7 +53,8 @@
     .ah{padding:22px 22px 0}
     .at{font-size:1.12rem;font-weight:600;margin-bottom:4px}
     .as{font-size:.92rem;color:var(--tx2);margin-bottom:20px}
-    .ab{padding:0 22px 22px}
+    /* FIXED: Renamed from .ab to .auth-body */
+    .auth-body{padding:0 22px 22px}
     .adiv{border:none;border-top:1px solid var(--bd-m);margin:0 0 18px}
     .af{padding:15px 22px;background:var(--bg-s);border-top:1px solid var(--bd-m);text-align:center;font-size:.9rem;color:var(--tx2)}
     .af a{color:var(--ac);cursor:pointer}.af a:hover{text-decoration:underline}
@@ -150,8 +151,9 @@
     .lc:hover{border-color:var(--bd);box-shadow:0 1px 4px rgba(0,0,0,.08)}
     @keyframes fadeUp{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
     .ct{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px}
-    .ab{flex-shrink:0;width:38px;height:38px;border-radius:var(--r);display:flex;align-items:center;justify-content:center}
-    .ab.run{background:var(--run-bg);color:var(--run)}.ab.walk{background:var(--walk-bg);color:var(--walk)}.ab svg{width:19px;height:19px}
+    /* FIXED: Renamed from .ab to .activity-badge */
+    .activity-badge{flex-shrink:0;width:38px;height:38px;border-radius:var(--r);display:flex;align-items:center;justify-content:center}
+    .activity-badge.run{background:var(--run-bg);color:var(--run)}.activity-badge.walk{background:var(--walk-bg);color:var(--walk)}.activity-badge svg{width:19px;height:19px}
     .cm{flex:1;min-width:0}
     .cttl{font-size:1rem;font-weight:600;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px}
     .cdate{font-size:.82rem;color:var(--tx3);font-family:var(--mono)}
@@ -255,7 +257,8 @@
   </div>
   <div class="auth-card" id="p-in">
     <div class="ah"><p class="at">Sign in to Stride</p><p class="as">Your personal walk &amp; run log</p></div>
-    <div class="ab">
+    <!-- FIXED: Changed from class="ab" to class="auth-body" -->
+    <div class="auth-body">
       <hr class="adiv">
       <div class="field"><label class="fl">Username</label><input id="si-u" type="text" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="yourname"></div>
       <div class="field"><label class="fl">Password</label><input id="si-p" type="password" autocomplete="current-password" placeholder="••••••••"><span class="ferr hidden" id="si-e"></span></div>
@@ -265,7 +268,8 @@
   </div>
   <div class="auth-card hidden" id="p-up">
     <div class="ah"><p class="at">Create your account</p><p class="as">No email — just a username &amp; password</p></div>
-    <div class="ab">
+    <!-- FIXED: Changed from class="ab" to class="auth-body" -->
+    <div class="auth-body">
       <hr class="adiv">
       <div class="field"><label class="fl">Username <span>(2–20 chars, a-z 0-9 _ -)</span></label><input id="su-u" type="text" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="yourname"></div>
       <div class="field"><label class="fl">Password <span>(min 6 characters)</span></label><input id="su-p" type="password" autocomplete="new-password" placeholder="••••••••"></div>
@@ -640,7 +644,8 @@ function buildCard(l,i){
   if(l.dist)ms.push({v:l.dist.toFixed(2)+' km',k:'dist'});
   if(l.dur)ms.push({v:fmtDur(l.dur),k:'time'});
   if(l.elev)ms.push({v:l.elev+' m',k:'elev'});
-  div.innerHTML=`<div class="ct"><div class="ab ${l.type}">${actIcon(l.type)}</div><div class="cm"><div class="cttl">${esc(l.title)}</div><div class="cdate">${fmtDate(l.date)}</div></div><span class="pill ${l.type}">${l.type}</span></div><div class="cms">${ms.map(m=>`<div><div class="mv">${m.v}</div><div class="mk">${m.k}</div></div>`).join('')}</div>${l.notes?`<div class="cnote">${esc(l.notes)}</div>`:''}`;
+  // FIXED: Changed from "ab" to "activity-badge"
+  div.innerHTML=`<div class="ct"><div class="activity-badge ${l.type}">${actIcon(l.type)}</div><div class="cm"><div class="cttl">${esc(l.title)}</div><div class="cdate">${fmtDate(l.date)}</div></div><span class="pill ${l.type}">${l.type}</span></div><div class="cms">${ms.map(m=>`<div><div class="mv">${m.v}</div><div class="mk">${m.k}</div></div>`).join('')}</div>${l.notes?`<div class="cnote">${esc(l.notes)}</div>`:''}`;
   div.addEventListener('click',()=>openDetail(l));return div;
 }
 
