@@ -784,12 +784,25 @@ function renderHist(){
 
 /* PROFILE */
 function refreshProf(){
-  const logs=DB.logs(CU);
-  G('pacts').textContent=logs.length;
-  G('pkm').textContent=logs.reduce((a,l)=>a+l.dist,0).toFixed(1);
-  G('phrs').textContent=(logs.reduce((a,l)=>a+l.dur,0)/60).toFixed(1);
-  G('sacts').textContent=logs.length;
-  G('thsettbtn').textContent=DB.theme()==='dark'?'Light mode':'Dark mode';
+  const logs = DB.logs(CU);
+  const activities = logs.length;
+  const totalKm = logs.reduce((a,l)=>a+l.dist,0);
+  const totalHours = logs.reduce((a,l)=>a+l.dur,0) / 60;
+  
+  // Update text values
+  G('pacts').textContent = activities;
+  G('pkm').textContent = totalKm.toFixed(1);
+  G('phrs').textContent = totalHours.toFixed(1);
+  G('sacts').textContent = activities;
+  G('thsettbtn').textContent = DB.theme() === 'dark' ? 'Light mode' : 'Dark mode';
+  
+  // Calculate max value for scaling bars (use 100 if no data)
+  const maxValue = Math.max(activities, totalKm, totalHours, 100);
+  
+  // Update bar widths (percentage of max)
+  G('activities-bar').style.width = (activities / maxValue * 100) + '%';
+  G('distance-bar').style.width = (totalKm / maxValue * 100) + '%';
+  G('hours-bar').style.width = (totalHours / maxValue * 100) + '%';
 }
 
 /* CARD */
