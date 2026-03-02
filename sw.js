@@ -1,4 +1,4 @@
-const VER = 'stride-v2';
+const VER = 'stride-v3';  // Changed from v2 to v3
 const SHELL = ['./', './index.html', './manifest.json', './icons/icon-192.png', './icons/icon-512.png', './icons/icon-180.png'];
 
 self.addEventListener('install', e => {
