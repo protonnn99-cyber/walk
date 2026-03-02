@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Stride" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <title>Stride</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --white: #ffffff;
+      --bg: #f6f8fa;
+      --border: #d0d7de;
+      --border-light: #eaeef2;
+      --text: #1f2328;
+      --text-muted: #656d76;
+      --text-subtle: #9198a1;
+      --accent-blue: #0969da;
+      --red: #d1242f;
+      --tag-run-bg: #ddf4ff;
+      --tag-run-text: #0550ae;
+      --tag-walk-bg: #dafbe1;
+      --tag-walk-text: #116329;
+      --radius: 6px;
+      --radius-lg: 12px;
+      --shadow-sm: 0 1px 0 rgba(31,35,40,0.04);
+      --shadow: 0 1px 3px rgba(31,35,40,0.12), 0 1px 2px rgba(31,35,40,0.04);
+      --font-sans: 'DM Sans', -apple-system, sans-serif;
+      --font-mono: 'DM Mono', monospace;
+    }
+    html { font-size: 14px; }
+    body { font-family: var(--font-sans); background: var(--bg); color: var(--text); min-height: 100dvh; overscroll-behavior: none; -webkit-font-smoothing: antialiased; }
+    .hidden { display: none !important; }
+
+    /* AUTH */
+    #auth-screen { min-height: 100dvh; display: flex; align-items: center; justify-content: center; padding: 24px; background: var(--white); }
+    .auth-card { width: 100%; max-width: 340px; }
+    .auth-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 32px; }
+    .auth-logo-icon { width: 32px; height: 32px; background: var(--text); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+    .auth-logo-icon svg { width: 18px; height: 18px; stroke: white; fill: none; }
+    .auth-logo span { font-family: var(--font-mono); font-size: 1.2rem; font-weight: 500; letter-spacing: -0.02em; color: var(--text); }
+    .auth-title { font-size: 1.14rem; font-weight: 500; margin-bottom: 4px; }
+    .auth-sub { font-size: 0.93rem; color: var(--text-muted); margin-bottom: 24px; }
+    .auth-box { border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; background: var(--white); }
+    .form-group { margin-bottom: 14px; }
+    .form-group label { display: block; font-size: 0.86rem; font-weight: 500; margin-bottom: 6px; }
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%; padding: 7px 11px; border: 1px solid var(--border); border-radius: var(--radius);
+      font-family: var(--font-sans); font-size: 0.93rem; color: var(--text); background: var(--white);
+      outline: none; transition: border-color .15s, box-shadow .15s; appearance: none; -webkit-appearance: none;
+    }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+      border-color: var(--accent-blue); box-shadow: 0 0 0 3px rgba(9,105,218,.1);
+    }
+    .form-group textarea { resize: vertical; min-height: 72px; line-height: 1.5; }
+    .error-msg { font-size: 0.82rem; color: var(--red); margin-top: 4px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 7px 14px; border-radius: var(--radius); border: 1px solid;
+      font-family: var(--font-sans); font-size: 0.93rem; font-weight: 500;
+      cursor: pointer; transition: background .12s, border-color .12s, opacity .12s;
+      text-decoration: none; line-height: 1.4; white-space: nowrap;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn:active { opacity: .8; }
+    .btn svg { width: 15px; height: 15px; stroke: currentColor; fill: none; flex-shrink: 0; }
+    .btn-primary { background: var(--text); color: white; border-color: var(--text); width: 100%; }
+    .btn-primary:hover { background: #32383f; border-color: #32383f; }
+    .btn-outline { background: var(--white); color: var(--text); border-color: var(--border); }
+    .btn-outline:hover { background: var(--bg); }
+    .btn-danger { background: var(--white); color: var(--red); border-color: var(--border); }
+    .btn-danger:hover { background: #fff0ee; border-color: #ffa198; }
+    .btn-ghost { background: transparent; color: var(--text-muted); border-color: transparent; padding: 6px 8px; }
+    .btn-ghost:hover { background: var(--bg); color: var(--text); }
+    .auth-toggle { text-align: center; margin-top: 14px; font-size: 0.86rem; color: var(--text-muted); }
+    .auth-toggle a { color: var(--accent-blue); cursor: pointer; }
+    .auth-toggle a:hover { text-decoration: underline; }
+
+    /* APP SHELL */
+    #app-screen { min-height: 100dvh; display: flex; flex-direction: column; }
+    .header { background: var(--white); border-bottom: 1px solid var(--border-light); padding: 0 16px; height: 52px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+    .header-logo { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 1rem; font-weight: 500; letter-spacing: -0.02em; color: var(--text); }
+    .header-logo-icon { width: 24px; height: 24px; background: var(--text); border-radius: 5px; display: flex; align-items: center; justify-content: center; }
+    .header-logo-icon svg { width: 13px; height: 13px; stroke: white; fill: none; }
+    .header-right { display: flex; align-items: center; gap: 4px; }
+    .avatar { width: 28px; height: 28px; background: var(--bg); border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 0.75rem; font-weight: 500; cursor: pointer; transition: background .12s; }
+    .avatar:hover { background: var(--border-light); }
+    .nav-tabs { display: flex; background: var(--white); border-bottom: 1px solid var(--border-light); padding: 0 16px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    .nav-tabs::-webkit-scrollbar { display: none; }
+    .nav-tab { padding: 10px 14px; font-size: 0.86rem; font-weight: 500; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: color .12s, border-color .12s; -webkit-tap-highlight-color: transparent; display: flex; align-items: center; gap: 6px; }
+    .nav-tab svg { width: 14px; height: 14px; stroke: currentColor; fill: none; }
+    .nav-tab.active { color: var(--text); border-bottom-color: var(--text); }
+    .nav-tab:hover:not(.active) { color: var(--text); }
+    .main { flex: 1; padding: 20px 16px; max-width: 760px; margin: 0 auto; width: 100%; }
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* COMPONENTS */
+    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .section-title { font-size: 0.86rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    .stats-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; margin-bottom: 24px; }
+    @media (min-width: 480px) { .stats-grid { grid-template-columns: repeat(4,1fr); } }
+    .stat-card { background: var(--white); border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 14px 16px; }
+    .stat-label { font-size: 0.79rem; color: var(--text-subtle); margin-bottom: 6px; font-weight: 500; }
+    .stat-value { font-family: var(--font-mono); font-size: 1.5rem; font-weight: 500; color: var(--text); line-height: 1; }
+    .stat-unit { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); margin-top: 3px; }
+    .activity-list { display: flex; flex-direction: column; gap: 8px; }
+    .activity-card { background: var(--white); border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 14px 16px; cursor: pointer; transition: border-color .12s, box-shadow .12s; }
+    .activity-card:hover { border-color: var(--border); box-shadow: var(--shadow-sm); }
+    .activity-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+    .activity-title-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .activity-title { font-size: 0.93rem; font-weight: 500; }
+    .tag { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 20px; font-size: 0.75rem; font-weight: 500; line-height: 1.5; }
+    .tag-run { background: var(--tag-run-bg); color: var(--tag-run-text); }
+    .tag-walk { background: var(--tag-walk-bg); color: var(--tag-walk-text); }
+    .activity-date { font-size: 0.79rem; color: var(--text-subtle); white-space: nowrap; }
+    .activity-stats { display: flex; gap: 16px; flex-wrap: wrap; }
+    .activity-stat { display: flex; flex-direction: column; gap: 1px; }
+    .activity-stat-value { font-family: var(--font-mono); font-size: 0.93rem; font-weight: 500; }
+    .activity-stat-label { font-size: 0.72rem; color: var(--text-subtle); text-transform: uppercase; letter-spacing: 0.05em; }
+    .activity-note { margin-top: 10px; font-size: 0.82rem; color: var(--text-muted); border-top: 1px solid var(--border-light); padding-top: 10px; line-height: 1.5; }
+    .empty-state { text-align: center; padding: 48px 20px; background: var(--white); border: 1px solid var(--border-light); border-radius: var(--radius-lg); }
+    .empty-icon { width: 40px; height: 40px; margin: 0 auto 12px; background: var(--bg); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+    .empty-icon svg { width: 20px; height: 20px; stroke: var(--text-muted); fill: none; }
+    .empty-title { font-size: 0.93rem; font-weight: 500; margin-bottom: 4px; }
+    .empty-sub { font-size: 0.82rem; color: var(--text-muted); }
+
+    /* LOG FORM */
+    .form-card { background: var(--white); border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 20px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 360px) { .form-row { grid-template-columns: 1fr; } }
+    .form-card .form-group { margin-bottom: 14px; }
+    .type-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .type-option { padding: 9px 14px; border: 1px solid var(--border); border-radius: var(--radius); text-align: center; cursor: pointer; font-size: 0.86rem; font-weight: 500; color: var(--text-muted); transition: all .12s; -webkit-tap-highlight-color: transparent; display: flex; align-items: center; justify-content: center; gap: 7px; }
+    .type-option svg { width: 15px; height: 15px; stroke: currentColor; fill: none; }
+    .type-option:hover { background: var(--bg); color: var(--text); }
+    .type-option.sel-run { background: var(--tag-run-bg); border-color: #9cd7f0; color: var(--tag-run-text); }
+    .type-option.sel-walk { background: var(--tag-walk-bg); border-color: #82d49a; color: var(--tag-walk-text); }
+    .form-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 4px; }
+    .char-count { font-size: 0.75rem; color: var(--text-subtle); text-align: right; margin-top: 3px; }
+
+    /* MODAL */
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 200; display: flex; align-items: flex-end; justify-content: center; opacity: 0; transition: opacity .2s; }
+    .modal-backdrop.show { opacity: 1; }
+    @media (min-width: 600px) { .modal-backdrop { align-items: center; padding: 24px; } }
+    .modal { background: var(--white); border-radius: var(--radius-lg) var(--radius-lg) 0 0; width: 100%; max-width: 480px; max-height: 88dvh; overflow-y: auto; transform: translateY(24px); transition: transform .25s cubic-bezier(.34,1.56,.64,1); }
+    .modal-backdrop.show .modal { transform: translateY(0); }
+    @media (min-width: 600px) { .modal { border-radius: var(--radius-lg); transform: scale(.96) translateY(8px); } .modal-backdrop.show .modal { transform: scale(1) translateY(0); } }
+    .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px 14px; border-bottom: 1px solid var(--border-light); position: sticky; top: 0; background: var(--white); }
+    .modal-title { font-size: 0.93rem; font-weight: 600; }
+    .modal-body { padding: 20px; }
+    .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+    .detail-stat { background: var(--bg); border-radius: var(--radius); padding: 12px 14px; }
+    .detail-val { font-family: var(--font-mono); font-size: 1.3rem; font-weight: 500; line-height: 1; margin-bottom: 3px; }
+    .detail-lbl { font-size: 0.72rem; color: var(--text-subtle); text-transform: uppercase; letter-spacing: 0.05em; }
+    .detail-note { background: var(--bg); border-radius: var(--radius); padding: 12px 14px; font-size: 0.86rem; color: var(--text-muted); line-height: 1.6; }
+    .detail-note-lbl { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-subtle); margin-bottom: 6px; }
+    .modal-footer { padding: 14px 20px 16px; border-top: 1px solid var(--border-light); display: flex; gap: 8px; }
+    .modal-footer .btn { flex: 1; }
+
+    /* PROFILE */
+    .profile-header { display: flex; align-items: center; gap: 16px; background: var(--white); border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 16px; }
+    .profile-avatar { width: 52px; height: 52px; background: var(--bg); border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 1.1rem; font-weight: 500; flex-shrink: 0; }
+    .profile-name { font-size: 1rem; font-weight: 600; }
+    .profile-sub { font-size: 0.82rem; color: var(--text-muted); margin-top: 2px; }
+    .profile-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 16px; }
+    .profile-stat { background: var(--white); border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 14px; text-align: center; }
+    .profile-stat-val { font-family: var(--font-mono); font-size: 1.3rem; font-weight: 500; }
+    .profile-stat-lbl { font-size: 0.72rem; color: var(--text-subtle); margin-top: 3px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .settings-section { background: var(--white); border: 1px solid var(--border-light); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 12px; }
+    .settings-item { padding: 13px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-light); font-size: 0.86rem; }
+    .settings-item:last-child { border-bottom: none; }
+    .settings-val { color: var(--text-muted); font-family: var(--font-mono); font-size: 0.82rem; }
+
+    /* TOAST */
+    .toast-wrap { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 999; pointer-events: none; }
+    .toast { background: var(--text); color: white; padding: 9px 16px; border-radius: 20px; font-size: 0.82rem; font-weight: 500; opacity: 0; transform: translateY(8px); transition: opacity .2s, transform .2s; white-space: nowrap; }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    /* CONFIRM */
+    .confirm-bg { position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 300; display: flex; align-items: center; justify-content: center; padding: 24px; }
+    .confirm-box { background: var(--white); border-radius: var(--radius-lg); width: 100%; max-width: 340px; padding: 24px; }
+    .confirm-title { font-size: 0.93rem; font-weight: 600; margin-bottom: 6px; }
+    .confirm-msg { font-size: 0.86rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5; }
+    .confirm-actions { display: flex; gap: 8px; }
+    .confirm-actions .btn { flex: 1; }
+
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .activity-card { animation: fadeInUp .2s ease both; }
+  </style>
+</head>
+<body>
+
+<!-- AUTH -->
+<div id="auth-screen">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div class="auth-logo-icon"><svg viewBox="0 0 24 24" stroke-width="2.2"><polyline points="13 4 20 4 20 11"/><path d="M20 4L11 13"/><path d="M4 20l5-5"/><path d="M4 14l6 6"/></svg></div>
+      <span>stride</span>
+    </div>
+    <div id="signin-panel">
+      <div class="auth-title">Sign in to Stride</div>
+      <div class="auth-sub">Log your walks and runs.</div>
+      <div class="auth-box">
+        <div class="form-group"><label>Username</label><input type="text" id="si-user" placeholder="your-username" autocapitalize="none" autocomplete="username"/></div>
+        <div class="form-group"><label>Password</label><input type="password" id="si-pass" placeholder="••••••••" autocomplete="current-password"/></div>
+        <div id="si-err" class="error-msg hidden"></div>
+        <button class="btn btn-primary" style="margin-top:6px" onclick="doSignIn()">Sign in</button>
+      </div>
+      <div class="auth-toggle">New to Stride? <a onclick="toggleAuth('up')">Create an account</a></div>
+    </div>
+    <div id="signup-panel" class="hidden">
+      <div class="auth-title">Create your account</div>
+      <div class="auth-sub">Start tracking your stride.</div>
+      <div class="auth-box">
+        <div class="form-group"><label>Username</label><input type="text" id="su-user" placeholder="your-username" autocapitalize="none" autocomplete="username"/></div>
+        <div class="form-group"><label>Password</label><input type="password" id="su-pass" placeholder="Min. 6 characters" autocomplete="new-password"/></div>
+        <div class="form-group"><label>Confirm password</label><input type="password" id="su-conf" placeholder="••••••••" autocomplete="new-password"/></div>
+        <div id="su-err" class="error-msg hidden"></div>
+        <button class="btn btn-primary" style="margin-top:6px" onclick="doSignUp()">Create account</button>
+      </div>
+      <div class="auth-toggle">Already have an account? <a onclick="toggleAuth('in')">Sign in</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app-screen" class="hidden">
+  <header class="header">
+    <div class="header-logo">
+      <div class="header-logo-icon"><svg viewBox="0 0 24 24" stroke-width="2.2"><polyline points="13 4 20 4 20 11"/><path d="M20 4L11 13"/><path d="M4 20l5-5"/><path d="M4 14l6 6"/></svg></div>
+      stride
+    </div>
+    <div class="header-right">
+      <button class="btn btn-ghost" style="padding:5px 9px;font-size:.82rem;gap:5px" onclick="showPage('log')">
+        <svg viewBox="0 0 24 24" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Log
+      </button>
+      <div class="avatar" id="hdr-av" onclick="showPage('profile')">U</div>
+    </div>
+  </header>
+  <nav class="nav-tabs">
+    <div class="nav-tab active" data-page="dash" onclick="showPage('dash')"><svg viewBox="0 0 24 24" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>Overview</div>
+    <div class="nav-tab" data-page="log" onclick="showPage('log')"><svg viewBox="0 0 24 24" stroke-width="1.8"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Log Activity</div>
+    <div class="nav-tab" data-page="history" onclick="showPage('history')"><svg viewBox="0 0 24 24" stroke-width="1.8"><polyline points="12 8 12 12 14 14"/><path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5"/></svg>History</div>
+    <div class="nav-tab" data-page="profile" onclick="showPage('profile')"><svg viewBox="0 0 24 24" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Profile</div>
+  </nav>
+  <main class="main">
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dash">
+      <div class="section-header" style="margin-bottom:16px">
+        <div><div style="font-size:1rem;font-weight:600" id="greeting">Good morning</div><div style="font-size:.82rem;color:var(--text-muted);margin-top:2px" id="dash-date"></div></div>
+      </div>
+      <div class="section-header"><span class="section-title">This month</span></div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-label">Activities</div><div class="stat-value" id="s-total">0</div><div class="stat-unit">total</div></div>
+        <div class="stat-card"><div class="stat-label">Distance</div><div class="stat-value" id="s-dist">0.0</div><div class="stat-unit">km</div></div>
+        <div class="stat-card"><div class="stat-label">Time</div><div class="stat-value" id="s-time">0</div><div class="stat-unit">min</div></div>
+        <div class="stat-card"><div class="stat-label">Steps</div><div class="stat-value" id="s-steps">0</div><div class="stat-unit">total</div></div>
+      </div>
+      <div class="section-header"><span class="section-title">Recent</span><a style="font-size:.82rem;color:var(--accent-blue);cursor:pointer" onclick="showPage('history')">View all →</a></div>
+      <div class="activity-list" id="recent-list"></div>
+    </div>
+
+    <!-- LOG -->
+    <div class="page" id="page-log">
+      <div class="section-header" style="margin-bottom:16px"><div style="font-size:1rem;font-weight:600">Log Activity</div></div>
+      <div class="form-card">
+        <div class="form-group">
+          <label>Activity type</label>
+          <div class="type-selector">
+            <div class="type-option sel-run" id="opt-run" onclick="selType('run')"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M5 16l2-4 4 2 4-6 2 4"/><circle cx="18" cy="5" r="2"/></svg>Run</div>
+            <div class="type-option" id="opt-walk" onclick="selType('walk')"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M13 4l2 3-3 3-1 6h-3l1-6-2-2 2-4z"/><circle cx="12" cy="2" r="1"/></svg>Walk</div>
+          </div>
+        </div>
+        <div class="form-group"><label>Title</label><input type="text" id="f-title" placeholder="e.g. Morning run, Evening walk…" maxlength="80"/></div>
+        <div class="form-row">
+          <div class="form-group"><label>Date</label><input type="date" id="f-date"/></div>
+          <div class="form-group"><label>Steps</label><input type="number" id="f-steps" placeholder="e.g. 8500" min="0"/></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Distance (km)</label><input type="number" id="f-dist" placeholder="e.g. 5.2" step="0.01" min="0"/></div>
+          <div class="form-group"><label>Duration (min)</label><input type="number" id="f-time" placeholder="e.g. 32" min="0"/></div>
+        </div>
+        <div class="form-group"><label>Elevation gain (m)</label><input type="number" id="f-elev" placeholder="e.g. 120" min="0"/></div>
+        <div class="form-group">
+          <label>Notes <span style="color:var(--text-subtle);font-weight:400">(optional)</span></label>
+          <textarea id="f-notes" placeholder="How did it feel? Any highlights…" maxlength="500"></textarea>
+          <div class="char-count"><span id="nc">0</span>/500</div>
+        </div>
+        <div class="form-footer">
+          <button class="btn btn-outline" onclick="clearForm()">Clear</button>
+          <button class="btn btn-primary" onclick="saveAct()">Save activity</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- HISTORY -->
+    <div class="page" id="page-history">
+      <div class="section-header" style="margin-bottom:16px">
+        <div style="font-size:1rem;font-weight:600">All Activities</div>
+        <select id="f-filter" onchange="renderHistory()" style="border:1px solid var(--border);border-radius:var(--radius);padding:5px 10px;font-family:var(--font-sans);font-size:.82rem;color:var(--text);background:var(--white);outline:none;cursor:pointer">
+          <option value="all">All types</option><option value="run">Run</option><option value="walk">Walk</option>
+        </select>
+      </div>
+      <div class="activity-list" id="history-list"></div>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="page" id="page-profile">
+      <div class="profile-header">
+        <div class="profile-avatar" id="p-av">U</div>
+        <div><div class="profile-name" id="p-name">username</div><div class="profile-sub" id="p-since">Member since today</div></div>
+      </div>
+      <div class="section-header"><span class="section-title">All time</span></div>
+      <div class="profile-stats" style="margin-bottom:20px">
+        <div class="profile-stat"><div class="profile-stat-val" id="p-total">0</div><div class="profile-stat-lbl">Activities</div></div>
+        <div class="profile-stat"><div class="profile-stat-val" id="p-dist">0.0</div><div class="profile-stat-lbl">km</div></div>
+        <div class="profile-stat"><div class="profile-stat-val" id="p-steps">0</div><div class="profile-stat-lbl">K steps</div></div>
+      </div>
+      <div class="section-header"><span class="section-title">Account</span></div>
+      <div class="settings-section">
+        <div class="settings-item"><span>Username</span><span class="settings-val" id="set-user">—</span></div>
+        <div class="settings-item"><span>Member since</span><span class="settings-val" id="set-since">—</span></div>
+        <div class="settings-item"><span>Total activities</span><span class="settings-val" id="set-count">0</span></div>
+      </div>
+      <div style="margin-top:16px"><button class="btn btn-danger" style="width:100%" onclick="confirmSignOut()">Sign out</button></div>
+    </div>
+  </main>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="modal-backdrop hidden" id="detail-modal" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="modal-title" id="m-title">Activity</span>
+        <span class="tag" id="m-tag"></span>
+      </div>
+      <button class="btn btn-ghost" style="padding:4px" onclick="closeModalDirect()"><svg viewBox="0 0 24 24" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div style="font-size:.79rem;color:var(--text-subtle);margin-bottom:14px" id="m-date"></div>
+      <div class="detail-grid">
+        <div class="detail-stat"><div class="detail-val" id="m-steps">—</div><div class="detail-lbl">Steps</div></div>
+        <div class="detail-stat"><div class="detail-val" id="m-dist">—</div><div class="detail-lbl">Distance</div></div>
+        <div class="detail-stat"><div class="detail-val" id="m-time">—</div><div class="detail-lbl">Duration</div></div>
+        <div class="detail-stat"><div class="detail-val" id="m-elev">—</div><div class="detail-lbl">Elevation</div></div>
+      </div>
+      <div id="m-note-wrap" class="hidden"><div class="detail-note"><div class="detail-note-lbl">Notes</div><div id="m-note"></div></div></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger" id="m-del">Delete</button>
+      <button class="btn btn-outline" onclick="closeModalDirect()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM -->
+<div class="confirm-bg hidden" id="confirm-bg">
+  <div class="confirm-box">
+    <div class="confirm-title" id="c-title">Are you sure?</div>
+    <div class="confirm-msg" id="c-msg">This cannot be undone.</div>
+    <div class="confirm-actions">
+      <button class="btn btn-outline" onclick="cancelConfirm()">Cancel</button>
+      <button class="btn btn-danger" id="c-ok">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-wrap"><div class="toast" id="toast"></div></div>
+
+<script>
+// ── DATA LAYER ──
+const DB = {
+  users: () => JSON.parse(localStorage.getItem('st_users') || '{}'),
+  saveUsers: u => localStorage.setItem('st_users', JSON.stringify(u)),
+  session: () => localStorage.getItem('st_sess'),
+  setSession: u => localStorage.setItem('st_sess', u),
+  clearSession: () => localStorage.removeItem('st_sess'),
+  acts: u => JSON.parse(localStorage.getItem('st_a_' + u) || '[]'),
+  saveActs: (u, a) => localStorage.setItem('st_a_' + u, JSON.stringify(a))
+};
+
+// ── SIMPLE HASH (local-only, non-cryptographic) ──
+function sh(s) { let h = 0; for (let i = 0; i < s.length; i++) { h = (h << 5) - h + s.charCodeAt(i); h |= 0; } return h.toString(36); }
+
+// ── AUTH ──
+let CU = null; // current user
+
+function toggleAuth(m) {
+  document.getElementById('signin-panel').classList.toggle('hidden', m !== 'in');
+  document.getElementById('signup-panel').classList.toggle('hidden', m !== 'up');
+}
+
+function doSignIn() {
+  const u = document.getElementById('si-user').value.trim().toLowerCase();
+  const p = document.getElementById('si-pass').value;
+  const e = document.getElementById('si-err');
+  e.classList.add('hidden');
+  if (!u || !p) { setErr(e, 'Please fill in all fields.'); return; }
+  const us = DB.users();
+  if (!us[u] || us[u].pw !== sh(p)) { setErr(e, 'Incorrect username or password.'); return; }
+  DB.setSession(u); boot(u);
+}
+
+function doSignUp() {
+  const u = document.getElementById('su-user').value.trim().toLowerCase();
+  const p = document.getElementById('su-pass').value;
+  const c = document.getElementById('su-conf').value;
+  const e = document.getElementById('su-err');
+  e.classList.add('hidden');
+  if (!u || !p || !c) { setErr(e, 'Please fill in all fields.'); return; }
+  if (!/^[a-z0-9_-]{2,20}$/.test(u)) { setErr(e, 'Username: 2–20 chars, a-z 0-9 _ -'); return; }
+  if (p.length < 6) { setErr(e, 'Password must be at least 6 characters.'); return; }
+  if (p !== c) { setErr(e, 'Passwords do not match.'); return; }
+  const us = DB.users();
+  if (us[u]) { setErr(e, 'Username already taken.'); return; }
+  us[u] = { pw: sh(p), ca: new Date().toISOString() };
+  DB.saveUsers(us); DB.setSession(u); boot(u);
+}
+
+function setErr(el, msg) { el.textContent = msg; el.classList.remove('hidden'); }
+
+function boot(u) {
+  CU = u;
+  document.getElementById('auth-screen').classList.add('hidden');
+  document.getElementById('app-screen').classList.remove('hidden');
+  const av = u[0].toUpperCase();
+  document.getElementById('hdr-av').textContent = av;
+  document.getElementById('p-av').textContent = av;
+  document.getElementById('p-name').textContent = u;
+  document.getElementById('set-user').textContent = u;
+  const us = DB.users();
+  const since = new Date(us[u].ca).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+  document.getElementById('p-since').textContent = 'Member since ' + since;
+  document.getElementById('set-since').textContent = since;
+  setDefaultDate(); updateDash(); showPage('dash');
+}
+
+function confirmSignOut() {
+  askConfirm('Sign out?', 'You will be returned to the sign-in screen.', () => {
+    DB.clearSession(); CU = null;
+    document.getElementById('app-screen').classList.add('hidden');
+    document.getElementById('auth-screen').classList.remove('hidden');
+    document.getElementById('si-user').value = '';
+    document.getElementById('si-pass').value = '';
+    toggleAuth('in');
+  });
+}
+
+// ── NAVIGATION ──
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  const tab = document.querySelector('[data-page="' + name + '"]');
+  if (tab) tab.classList.add('active');
+  if (name === 'dash') updateDash();
+  if (name === 'history') renderHistory();
+  if (name === 'profile') updateProfile();
+  if (name === 'log') setDefaultDate();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── HELPERS ──
+function setDefaultDate() { document.getElementById('f-date').value = new Date().toISOString().split('T')[0]; }
+function fmtDate(d) { return new Date(d + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }); }
+function fmtSteps(n) { return n >= 1000 ? (n / 1000).toFixed(1) + 'k' : (n || '—'); }
+function fmtDist(n) { return n ? n.toFixed(2) + ' km' : '—'; }
+function fmtTime(n) { if (!n) return '—'; if (n < 60) return n + ' min'; return Math.floor(n / 60) + 'h ' + (n % 60) + 'm'; }
+function fmtElev(n) { return n ? n + ' m' : '—'; }
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ── LOG ──
+let selActType = 'run';
+function selType(t) {
+  selActType = t;
+  document.getElementById('opt-run').className = 'type-option' + (t === 'run' ? ' sel-run' : '');
+  document.getElementById('opt-walk').className = 'type-option' + (t === 'walk' ? ' sel-walk' : '');
+}
+document.getElementById('f-notes').addEventListener('input', function() { document.getElementById('nc').textContent = this.value.length; });
+
+function saveAct() {
+  const title = document.getElementById('f-title').value.trim();
+  const date = document.getElementById('f-date').value;
+  const steps = parseInt(document.getElementById('f-steps').value) || 0;
+  const dist = parseFloat(document.getElementById('f-dist').value) || 0;
+  const time = parseInt(document.getElementById('f-time').value) || 0;
+  const elev = parseInt(document.getElementById('f-elev').value) || 0;
+  const notes = document.getElementById('f-notes').value.trim();
+  if (!date) { toast('Please select a date.'); return; }
+  if (!title) { document.getElementById('f-title').focus(); toast('Please add a title.'); return; }
+  if (!steps && !dist && !time) { toast('Add at least one metric.'); return; }
+  const acts = DB.acts(CU);
+  acts.unshift({ id: Date.now().toString(36) + Math.random().toString(36).slice(2), type: selActType, title, date, steps, distance: dist, time, elevation: elev, notes, createdAt: new Date().toISOString() });
+  DB.saveActs(CU, acts);
+  clearForm(); toast('Activity saved!'); showPage('dash');
+}
+
+function clearForm() {
+  ['f-title','f-steps','f-dist','f-time','f-elev','f-notes'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('nc').textContent = '0';
+  selType('run'); setDefaultDate();
+}
+
+// ── DASHBOARD ──
+function updateDash() {
+  const h = new Date().getHours();
+  const g = h < 12 ? 'morning' : h < 17 ? 'afternoon' : 'evening';
+  document.getElementById('greeting').textContent = `Good ${g}, ${CU}`;
+  document.getElementById('dash-date').textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+  const acts = DB.acts(CU);
+  const now = new Date();
+  const m = now.getMonth(), y = now.getFullYear();
+  const mo = acts.filter(a => { const d = new Date(a.date + 'T12:00:00'); return d.getMonth() === m && d.getFullYear() === y; });
+  document.getElementById('s-total').textContent = mo.length;
+  document.getElementById('s-dist').textContent = mo.reduce((s,a) => s + a.distance, 0).toFixed(1);
+  document.getElementById('s-time').textContent = mo.reduce((s,a) => s + a.time, 0);
+  document.getElementById('s-steps').textContent = fmtSteps(mo.reduce((s,a) => s + a.steps, 0));
+  const list = document.getElementById('recent-list');
+  list.innerHTML = '';
+  const recent = acts.slice(0, 5);
+  if (!recent.length) {
+    list.innerHTML = `<div class="empty-state"><div class="empty-icon"><svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M5 16l2-4 4 2 4-6 2 4"/><circle cx="18" cy="5" r="2"/></svg></div><div class="empty-title">No activities yet</div><div class="empty-sub">Log your first walk or run to get started.</div></div>`;
+  } else { recent.forEach((a, i) => list.appendChild(buildCard(a, i))); }
+}
+
+// ── HISTORY ──
+function renderHistory() {
+  const f = document.getElementById('f-filter').value;
+  let acts = DB.acts(CU);
+  if (f !== 'all') acts = acts.filter(a => a.type === f);
+  const list = document.getElementById('history-list');
+  list.innerHTML = '';
+  if (!acts.length) {
+    list.innerHTML = `<div class="empty-state"><div class="empty-icon"><svg viewBox="0 0 24 24" stroke-width="1.8"><polyline points="12 8 12 12 14 14"/><path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5"/></svg></div><div class="empty-title">No activities found</div><div class="empty-sub">${f !== 'all' ? 'No ' + f + ' activities logged yet.' : 'Start logging to build your history.'}</div></div>`;
+  } else { acts.forEach((a, i) => list.appendChild(buildCard(a, i))); }
+}
+
+// ── PROFILE ──
+function updateProfile() {
+  const acts = DB.acts(CU);
+  document.getElementById('p-total').textContent = acts.length;
+  document.getElementById('p-dist').textContent = acts.reduce((s,a) => s + a.distance, 0).toFixed(1);
+  document.getElementById('p-steps').textContent = Math.round(acts.reduce((s,a) => s + a.steps, 0) / 1000);
+  document.getElementById('set-count').textContent = acts.length;
+}
+
+// ── CARD BUILDER ──
+function buildCard(a, i) {
+  const card = document.createElement('div');
+  card.className = 'activity-card';
+  card.style.animationDelay = (i * 0.04) + 's';
+  card.innerHTML = `
+    <div class="activity-card-header">
+      <div><div class="activity-title-row"><span class="activity-title">${esc(a.title)}</span><span class="tag tag-${a.type}">${a.type}</span></div></div>
+      <span class="activity-date">${fmtDate(a.date)}</span>
+    </div>
+    <div class="activity-stats">
+      ${a.steps ? `<div class="activity-stat"><span class="activity-stat-value">${fmtSteps(a.steps)}</span><span class="activity-stat-label">Steps</span></div>` : ''}
+      ${a.distance ? `<div class="activity-stat"><span class="activity-stat-value">${a.distance.toFixed(2)}</span><span class="activity-stat-label">km</span></div>` : ''}
+      ${a.time ? `<div class="activity-stat"><span class="activity-stat-value">${fmtTime(a.time)}</span><span class="activity-stat-label">Time</span></div>` : ''}
+      ${a.elevation ? `<div class="activity-stat"><span class="activity-stat-value">${a.elevation}</span><span class="activity-stat-label">Elev m</span></div>` : ''}
+    </div>
+    ${a.notes ? `<div class="activity-note">${esc(a.notes)}</div>` : ''}
+  `;
+  card.addEventListener('click', () => openDetail(a));
+  return card;
+}
+
+// ── DETAIL MODAL ──
+function openDetail(a) {
+  document.getElementById('m-title').textContent = a.title;
+  document.getElementById('m-tag').className = 'tag tag-' + a.type;
+  document.getElementById('m-tag').textContent = a.type;
+  document.getElementById('m-date').textContent = fmtDate(a.date);
+  document.getElementById('m-steps').textContent = fmtSteps(a.steps);
+  document.getElementById('m-dist').textContent = fmtDist(a.distance);
+  document.getElementById('m-time').textContent = fmtTime(a.time);
+  document.getElementById('m-elev').textContent = fmtElev(a.elevation);
+  const nw = document.getElementById('m-note-wrap');
+  if (a.notes) { document.getElementById('m-note').textContent = a.notes; nw.classList.remove('hidden'); } else { nw.classList.add('hidden'); }
+  document.getElementById('m-del').onclick = () => deleteAct(a.id);
+  const modal = document.getElementById('detail-modal');
+  modal.classList.remove('hidden');
+  requestAnimationFrame(() => modal.classList.add('show'));
+}
+
+function closeModal(e) { if (e.target === document.getElementById('detail-modal')) closeModalDirect(); }
+function closeModalDirect() {
+  const m = document.getElementById('detail-modal');
+  m.classList.remove('show');
+  setTimeout(() => m.classList.add('hidden'), 220);
+}
+
+function deleteAct(id) {
+  closeModalDirect();
+  setTimeout(() => {
+    askConfirm('Delete activity?', 'This activity will be permanently removed.', () => {
+      DB.saveActs(CU, DB.acts(CU).filter(a => a.id !== id));
+      toast('Activity deleted.');
+      if (document.getElementById('page-history').classList.contains('active')) renderHistory();
+      else updateDash();
+    });
+  }, 250);
+}
+
+// ── CONFIRM ──
+let confirmCb = null;
+function askConfirm(title, msg, cb) {
+  document.getElementById('c-title').textContent = title;
+  document.getElementById('c-msg').textContent = msg;
+  confirmCb = cb;
+  document.getElementById('confirm-bg').classList.remove('hidden');
+}
+document.getElementById('c-ok').addEventListener('click', () => {
+  document.getElementById('confirm-bg').classList.add('hidden');
+  if (confirmCb) { confirmCb(); confirmCb = null; }
+});
+function cancelConfirm() { document.getElementById('confirm-bg').classList.add('hidden'); confirmCb = null; }
+
+// ── TOAST ──
+let tt = null;
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(tt); tt = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ── KEYBOARD ──
+['si-pass','si-user'].forEach(id => document.getElementById(id).addEventListener('keydown', e => { if (e.key === 'Enter') doSignIn(); }));
+['su-conf','su-pass','su-user'].forEach(id => document.getElementById(id).addEventListener('keydown', e => { if (e.key === 'Enter') doSignUp(); }));
+
+// ── INIT ──
+(function() {
+  const s = DB.session(), us = DB.users();
+  if (s && us[s]) boot(s);
+})();
+
+// ── SW ──
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(console.error));
+}
+</script>
+</body>
+</html>
