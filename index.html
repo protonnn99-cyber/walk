@@ -120,25 +120,47 @@
     .sb-av{width:36px;height:36px;border-radius:50%;background:var(--bg-m);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.85rem;font-weight:600;color:var(--tx2);cursor:pointer;transition:border-color .15s;margin-top:2px}
     .sb-av:hover{border-color:var(--tx3)}
 
-    /* MAIN */
+    /* MAIN - FIXED TOPBAR SPACING */
     .main{margin-left:var(--sb-w);flex:1;display:flex;flex-direction:column;min-height:100dvh}
-    .topbar{background:var(--bg);border-bottom:1px solid var(--bd-m);height:54px;display:flex;align-items:center;padding:0 20px;position:sticky;top:0;z-index:40;transition:background .2s}
-    .topbar-ttl{font-size:1.05rem;font-weight:600;color:var(--tx)}
-    .content{flex:1;padding:22px 20px calc(26px + var(--sb));max-width:680px;width:100%}
+    .topbar{
+      background:var(--bg);
+      border-bottom:1px solid var(--bd-m);
+      height:60px;
+      display:flex;
+      align-items:center;
+      padding:0 16px;
+      position:sticky;
+      top:0;
+      z-index:40;
+      transition:background .2s;
+    }
+    .topbar-ttl{
+      font-size:1.2rem;
+      font-weight:600;
+      color:var(--tx);
+      letter-spacing:-0.02em;
+    }
+    .content{
+      flex:1;
+      padding:20px 16px calc(26px + var(--sb));
+      max-width:680px;
+      width:100%;
+      margin:0 auto;
+    }
 
     /* VIEWS */
     .view{display:none}.view.active{display:block}
     .sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
     .st{font-size:.8rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--tx3)}
-    .sl{font-size:.9rem;color:var(--ac);cursor:pointer}.sl:hover{text-decoration:underline}
 
-    /* Period toggle */
+    /* Period toggle - FIXED LAYOUT */
     .period-row {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      gap: 8px;
-      margin-bottom: 20px;
+      gap: 10px;
+      margin-bottom: 24px;
+      width: 100%;
     }
     .ptoggle {
       display: inline-flex;
@@ -147,10 +169,10 @@
       padding: 3px;
       gap: 2px;
       width: 100%;
-      max-width: 280px;
+      max-width: 260px;
     }
     .pb {
-      padding: 8px 18px;
+      padding: 8px 16px;
       border-radius: 6px;
       font-size: .9rem;
       font-weight: 500;
@@ -174,51 +196,81 @@
       box-shadow: 0 1px 3px rgba(0,0,0,.3);
     }
     .plbl {
-      font-size: .84rem;
+      font-size: .85rem;
       color: var(--tx3);
       font-family: var(--mono);
       padding-left: 4px;
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    /* GOALS - NEW */
+    /* GOALS - FIXED LAYOUT (NO HORIZONTAL SCROLL) */
     .goal-card {
       background: var(--bg);
       border: 1px solid var(--bd-m);
       border-radius: var(--rm);
       padding: 20px;
       margin-bottom: 20px;
+      width: 100%;
+      overflow: hidden;
     }
     .goal-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 15px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 10px;
     }
     .goal-title {
       font-weight: 600;
       font-size: 1.1rem;
+      white-space: nowrap;
     }
     .goal-edit {
       color: var(--ac);
       font-size: .9rem;
       cursor: pointer;
+      padding: 4px 8px;
+      border-radius: var(--r);
+    }
+    .goal-edit:hover {
+      background: var(--bg-m);
     }
     .goal-progress {
-      margin: 15px 0 10px;
+      margin: 16px 0 12px;
+      width: 100%;
     }
     .goal-stats {
       display: flex;
-      justify-content: space-between;
-      font-size: .9rem;
+      align-items: baseline;
+      gap: 5px;
+      font-size: 1rem;
       color: var(--tx2);
-      margin-bottom: 8px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    .goal-stats span:first-child {
+      font-family: var(--mono);
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--tx);
+    }
+    .goal-stats span:nth-child(3) {
+      font-family: var(--mono);
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--tx);
     }
     .goal-bar-track {
-      height: 12px;
+      height: 16px;
       background: var(--bg-m);
       border-radius: 20px;
       overflow: hidden;
       border: 1px solid var(--bd-m);
+      width: 100%;
     }
     .goal-bar-fill {
       height: 100%;
@@ -226,25 +278,61 @@
       border-radius: 20px;
       transition: width 0.3s ease;
     }
+    .goal-message {
+      font-size: .95rem;
+      color: var(--goal);
+      margin-top: 12px;
+      font-weight: 500;
+      padding: 8px 12px;
+      background: var(--goal-bg);
+      border-radius: var(--r);
+      display: inline-block;
+    }
     .goal-input-group {
       display: flex;
       gap: 10px;
-      margin-top: 15px;
+      margin-top: 16px;
+      flex-wrap: wrap;
     }
     .goal-input {
       flex: 1;
-      padding: 10px;
+      min-width: 120px;
+      padding: 10px 12px;
       border: 1px solid var(--bd);
       border-radius: var(--r);
       background: var(--bg);
       color: var(--tx);
       font-family: var(--font);
+      font-size: 1rem;
     }
-    .goal-message {
-      font-size: .9rem;
-      color: var(--goal);
-      margin-top: 10px;
-      font-weight: 500;
+
+    /* Progress stats grid - FIXED */
+    .progress-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 20px 0;
+      width: 100%;
+    }
+    .progress-item {
+      background: var(--bg);
+      border: 1px solid var(--bd-m);
+      border-radius: var(--rm);
+      padding: 16px 12px;
+      text-align: center;
+    }
+    .progress-label {
+      font-size: .75rem;
+      color: var(--tx3);
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      margin-bottom: 8px;
+    }
+    .progress-value {
+      font-family: var(--mono);
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--tx);
     }
 
     /* Stats */
@@ -313,11 +401,92 @@
     .chip{flex-shrink:0;padding:7px 14px;border-radius:20px;border:1px solid var(--bd);background:var(--bg);font-size:.88rem;font-weight:500;color:var(--tx2);cursor:pointer;transition:all .12s;user-select:none}
     .chip:hover{border-color:var(--tx3);color:var(--tx)}.chip.active{background:var(--tx);color:var(--bg);border-color:var(--tx)}
 
-    /* Profile */
-    .phero{display:flex;align-items:center;gap:16px;background:var(--bg);border:1px solid var(--bd-m);border-radius:var(--rm);padding:20px;margin-bottom:18px;transition:background .2s}
-    .pav{width:56px;height:56px;border-radius:50%;background:var(--bg-m);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:1.18rem;font-weight:600;color:var(--tx);flex-shrink:0}
-    .pnm{font-size:1.08rem;font-weight:600;margin-bottom:3px}
-    .psub{font-size:.85rem;color:var(--tx3);font-family:var(--mono)}
+    /* Profile - UPDATED with Bio and Edit Username */
+    .phero {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: var(--bg);
+      border: 1px solid var(--bd-m);
+      border-radius: var(--rm);
+      padding: 20px;
+      margin-bottom: 18px;
+      transition: background .2s;
+      flex-wrap: wrap;
+    }
+    .pav {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--bg-m);
+      border: 1px solid var(--bd);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono);
+      font-size: 1.18rem;
+      font-weight: 600;
+      color: var(--tx);
+      flex-shrink: 0;
+    }
+    .pinfo {
+      flex: 1;
+      min-width: 0;
+    }
+    .pnm {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .edit-username {
+      font-size: .8rem;
+      color: var(--ac);
+      cursor: pointer;
+      padding: 2px 8px;
+      border-radius: var(--r);
+      background: var(--bg-m);
+    }
+    .edit-username:hover {
+      opacity: .8;
+    }
+    .pbio {
+      font-size: .9rem;
+      color: var(--tx2);
+      margin-bottom: 4px;
+      word-break: break-word;
+    }
+    .bio-edit {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+    .bio-input {
+      flex: 1;
+      min-width: 180px;
+      padding: 8px 12px;
+      border: 1px solid var(--bd);
+      border-radius: var(--r);
+      background: var(--bg);
+      color: var(--tx);
+      font-family: var(--font);
+      font-size: .9rem;
+    }
+    .bio-char-count {
+      font-size: .75rem;
+      color: var(--tx3);
+      text-align: right;
+      margin-top: 4px;
+    }
+    .psub {
+      font-size: .85rem;
+      color: var(--tx3);
+      font-family: var(--mono);
+    }
     
     /* Horizontal Bar Graph for Profile */
     .stats-bars {
@@ -523,16 +692,16 @@
         <div class="log-list" id="rlist"></div>
       </div>
 
-      <!-- GOALS - NEW -->
+      <!-- GOALS - FIXED LAYOUT -->
       <div class="view" id="view-goals">
         <div class="goal-card">
           <div class="goal-header">
             <span class="goal-title">🎯 Weekly Distance Goal</span>
-            <span class="goal-edit" onclick="editGoal()">Edit</span>
+            <span class="goal-edit" onclick="editGoal()">✎ Edit</span>
           </div>
           <div class="goal-progress">
             <div class="goal-stats">
-              <span id="goal-current">0</span>
+              <span id="goal-current">0.0</span>
               <span>/</span>
               <span id="goal-target">10</span>
               <span>km</span>
@@ -553,33 +722,18 @@
         </div>
         
         <div class="sh"><span class="st">Progress this week</span></div>
-        <div class="stats-bars">
-          <div class="stat-bar-item">
-            <div class="stat-bar-label">
-              <span class="stat-bar-name">Activities</span>
-              <span class="stat-bar-value" id="week-activities">0</span>
-            </div>
-            <div class="stat-bar-track">
-              <div class="stat-bar-fill activities-fill" id="week-activities-bar" style="width: 0%"></div>
-            </div>
+        <div class="progress-grid">
+          <div class="progress-item">
+            <div class="progress-label">Activities</div>
+            <div class="progress-value" id="week-activities">0</div>
           </div>
-          <div class="stat-bar-item">
-            <div class="stat-bar-label">
-              <span class="stat-bar-name">Distance (km)</span>
-              <span class="stat-bar-value" id="week-distance">0.0</span>
-            </div>
-            <div class="stat-bar-track">
-              <div class="stat-bar-fill distance-fill" id="week-distance-bar" style="width: 0%"></div>
-            </div>
+          <div class="progress-item">
+            <div class="progress-label">Distance</div>
+            <div class="progress-value" id="week-distance">0.0</div>
           </div>
-          <div class="stat-bar-item">
-            <div class="stat-bar-label">
-              <span class="stat-bar-name">Time (min)</span>
-              <span class="stat-bar-value" id="week-time">0</span>
-            </div>
-            <div class="stat-bar-track">
-              <div class="stat-bar-fill hours-fill" id="week-time-bar" style="width: 0%"></div>
-            </div>
+          <div class="progress-item">
+            <div class="progress-label">Time</div>
+            <div class="progress-value" id="week-time">0</div>
           </div>
         </div>
         
@@ -629,7 +783,6 @@
         </div>
         <div class="log-list" id="hlist"></div>
         
-        <!-- EXPORT BUTTON - NEW -->
         <div style="margin-top:20px; display:flex; gap:10px;">
           <button class="btn btn-s" onclick="exportToCSV()" style="flex:1">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -638,11 +791,26 @@
         </div>
       </div>
 
-      <!-- PROFILE -->
+      <!-- PROFILE - UPDATED with Bio and Edit Username -->
       <div class="view" id="view-profile">
         <div class="phero">
           <div class="pav" id="pav">U</div>
-          <div><div class="pnm" id="pnm">username</div><div class="psub" id="pjnd">joined —</div></div>
+          <div class="pinfo">
+            <div class="pnm">
+              <span id="pnm">username</span>
+              <span class="edit-username" onclick="editUsername()">✎ Change</span>
+            </div>
+            <div class="pbio" id="pbio-display"></div>
+            <div id="bio-editor" class="hidden">
+              <div class="bio-edit">
+                <input type="text" id="bio-input" class="bio-input" maxlength="30" placeholder="Add a short bio...">
+                <button class="btn btn-sm btn-s" onclick="saveBio()">Save</button>
+                <button class="btn btn-sm btn-g" onclick="cancelBio()">Cancel</button>
+              </div>
+              <div class="bio-char-count"><span id="bio-char">0</span>/30</div>
+            </div>
+            <div class="psub" id="pjnd">joined —</div>
+          </div>
         </div>
         
         <div class="sh"><span class="st">All-time stats</span></div>
@@ -687,11 +855,10 @@
           <div class="srow"><span>Color theme</span><button class="btn btn-s btn-sm" onclick="toggleTheme()" id="thsettbtn" style="min-width:96px">Dark mode</button></div>
         </div>
         
-        <!-- EXPORT BUTTON - NEW -->
         <div style="margin-top:20px; display:flex; gap:10px;">
           <button class="btn btn-s" onclick="exportToCSV()" style="flex:1">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Export to Excel
+            Export
           </button>
           <button class="btn btn-d" onclick="confirmSignOut()">Sign out</button>
         </div>
@@ -701,7 +868,7 @@
   </div>
 </div>
 
-<!-- DETAIL DRAWER - UPDATED WITH SHARE BUTTON -->
+<!-- DETAIL DRAWER -->
 <div class="overlay hidden" id="dov" onclick="closeDrawer(event)">
   <div class="drawer" id="ddr">
     <div class="dhandle"></div>
@@ -759,6 +926,8 @@ const DB={
   st:t=>localStorage.setItem('st_t',t),
   goal:()=>parseFloat(localStorage.getItem('st_goal')||'10'),
   setGoal:g=>localStorage.setItem('st_goal',g),
+  bio:(u)=>localStorage.getItem('st_bio_'+u)||'',
+  setBio:(u,b)=>localStorage.setItem('st_bio_'+u,b),
 };
 
 function hash(s){let h=0;for(let i=0;i<s.length;i++)h=(Math.imul(31,h)+s.charCodeAt(i))|0;return h.toString(36);}
@@ -817,13 +986,30 @@ function doSignUp(){
   DB.su(us);DB.setSess(u);boot(u);
 }
 function boot(u){
-  CU=u;G('auth').classList.add('hidden');G('app').classList.remove('hidden');
-  const av=u[0].toUpperCase();
-  G('sbav').textContent=av;G('pav').textContent=av;G('pnm').textContent=u;G('su').textContent=u;
-  const us=DB.u();
-  const since=new Date(us[u].joined).toLocaleDateString('en-US',{month:'short',year:'numeric'});
-  G('pjnd').textContent='joined '+since;G('ssince').textContent=since;
-  setTodayDate();applyTheme(DB.theme());sv('overview');
+  CU=u;
+  G('auth').classList.add('hidden');
+  G('app').classList.remove('hidden');
+  updateUserDisplay();
+  setTodayDate();
+  applyTheme(DB.theme());
+  sv('overview');
+}
+function updateUserDisplay() {
+  if (!CU) return;
+  const av = CU[0].toUpperCase();
+  G('sbav').textContent = av;
+  G('pav').textContent = av;
+  G('pnm').textContent = CU;
+  G('su').textContent = CU;
+  
+  const us = DB.u();
+  const since = new Date(us[CU].joined).toLocaleDateString('en-US',{month:'short',year:'numeric'});
+  G('pjnd').textContent = 'joined '+since;
+  G('ssince').textContent = since;
+  
+  // Load bio
+  const bio = DB.bio(CU);
+  G('pbio-display').textContent = bio || 'No bio yet';
 }
 function confirmSignOut(){
   askConfirm('Sign out?','You will return to the sign-in screen.',()=>{
@@ -831,6 +1017,70 @@ function confirmSignOut(){
     G('app').classList.add('hidden');G('auth').classList.remove('hidden');
     G('si-u').value='';G('si-p').value='';showPanel('in');
   });
+}
+
+/* BIO - NEW */
+function editBio() {
+  G('bio-editor').classList.remove('hidden');
+  G('bio-input').value = DB.bio(CU);
+  G('bio-char').textContent = DB.bio(CU).length;
+}
+function cancelBio() {
+  G('bio-editor').classList.add('hidden');
+}
+function saveBio() {
+  const bio = G('bio-input').value.trim().slice(0,30);
+  DB.setBio(CU, bio);
+  G('pbio-display').textContent = bio || 'No bio yet';
+  cancelBio();
+  toast('Bio updated!');
+}
+G('bio-input')?.addEventListener('input', function() {
+  G('bio-char').textContent = this.value.length;
+});
+
+/* USERNAME EDIT - NEW */
+function editUsername() {
+  const newName = prompt('Enter new username (2-20 chars, a-z 0-9 _ -):', CU);
+  if (!newName) return;
+  
+  const clean = newName.trim().toLowerCase();
+  if (!/^[a-z0-9_-]{2,20}$/.test(clean)) {
+    toast('Invalid username format');
+    return;
+  }
+  
+  const us = DB.u();
+  if (us[clean] && clean !== CU) {
+    toast('Username already taken');
+    return;
+  }
+  
+  // Transfer data to new username
+  const logs = DB.logs(CU);
+  const bio = DB.bio(CU);
+  
+  // Create new user entry
+  us[clean] = us[CU];
+  if (clean !== CU) delete us[CU];
+  DB.su(us);
+  
+  // Transfer logs and bio
+  if (logs.length) DB.sl(clean, logs);
+  if (bio) DB.setBio(clean, bio);
+  
+  // Update session
+  CU = clean;
+  DB.setSess(clean);
+  
+  // Update display
+  updateUserDisplay();
+  refreshOv();
+  renderHist();
+  refreshProf();
+  refreshGoals();
+  
+  toast('Username updated!');
 }
 
 /* NAV */
@@ -875,7 +1125,7 @@ function filterPeriod(logs){
   }
 }
 
-/* GOALS - NEW */
+/* GOALS */
 function refreshGoals(){
   const target = DB.goal();
   const now = new Date();
@@ -911,11 +1161,6 @@ function refreshGoals(){
   G('week-distance').textContent = weekDist.toFixed(1);
   G('week-time').textContent = weekTime;
   
-  const maxVal = Math.max(weekLogs.length, weekDist, weekTime/10, 10);
-  G('week-activities-bar').style.width = (weekLogs.length / maxVal * 100) + '%';
-  G('week-distance-bar').style.width = (weekDist / maxVal * 100) + '%';
-  G('week-time-bar').style.width = ((weekTime/10) / maxVal * 100) + '%';
-  
   // Show weekly activities
   const list = G('week-list'); list.innerHTML = '';
   if (weekLogs.length === 0) {
@@ -942,7 +1187,7 @@ function saveGoal() {
   }
 }
 
-/* EXPORT TO EXCEL - NEW */
+/* EXPORT TO EXCEL */
 function exportToCSV() {
   const logs = DB.logs(CU);
   if (logs.length === 0) {
@@ -950,59 +1195,50 @@ function exportToCSV() {
     return;
   }
   
-  // Create CSV content
   let csv = 'Date,Type,Title,Distance (km),Duration (min),Steps,Elevation (m),Notes\n';
   logs.forEach(l => {
     csv += `${l.date},${l.type},"${l.title}",${l.dist || 0},${l.dur || 0},${l.steps || 0},${l.elev || 0},"${l.notes || ''}"\n`;
   });
   
-  // Download file
   const blob = new Blob([csv], {type: 'text/csv'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `stride-activities-${new Date().toISOString().slice(0,10)}.csv`;
+  a.download = `stride-${CU}-${new Date().toISOString().slice(0,10)}.csv`;
   a.click();
   URL.revokeObjectURL(url);
   toast('Exported to CSV - open in Excel');
 }
 
-/* SHARE AS IMAGE - NEW */
+/* SHARE AS IMAGE */
 function shareAsImage() {
   const l = window.currentActivity;
   if (!l) return;
   
-  // Create canvas
   const canvas = document.createElement('canvas');
   canvas.width = 600;
   canvas.height = 400;
   const ctx = canvas.getContext('2d');
   
-  // Fill background
   ctx.fillStyle = document.documentElement.getAttribute('data-theme') === 'dark' ? '#0d1117' : '#ffffff';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   
-  // Draw border
   ctx.strokeStyle = '#30363d';
   ctx.lineWidth = 2;
   ctx.strokeRect(10, 10, canvas.width-20, canvas.height-20);
   
-  // Draw title
   ctx.fillStyle = document.documentElement.getAttribute('data-theme') === 'dark' ? '#e6edf3' : '#1a1e23';
   ctx.font = 'bold 32px "Geist", sans-serif';
   ctx.fillText('STRIDE', 50, 80);
   
-  // Draw activity type
   ctx.fillStyle = l.type === 'run' ? '#1a7f37' : '#9a6700';
   ctx.font = '24px "Geist", sans-serif';
   ctx.fillText(l.type.toUpperCase(), 50, 130);
   
-  // Draw title
   ctx.fillStyle = document.documentElement.getAttribute('data-theme') === 'dark' ? '#e6edf3' : '#1a1e23';
   ctx.font = '28px "Geist", sans-serif';
   ctx.fillText(l.title, 50, 190);
   
-  // Draw stats
   ctx.font = '20px "Geist Mono", monospace';
   ctx.fillStyle = document.documentElement.getAttribute('data-theme') === 'dark' ? '#8b949e' : '#4a5260';
   
@@ -1023,14 +1259,12 @@ function shareAsImage() {
     ctx.fillText(`Elevation: ${l.elev} m`, 50, y);
   }
   
-  // Draw date
   ctx.fillStyle = '#7a8290';
   ctx.font = '16px "Geist Mono", monospace';
   ctx.fillText(fmtDateLong(l.date), 50, 360);
   
-  // Download image
   const link = document.createElement('a');
-  link.download = `stride-${l.date}.png`;
+  link.download = `stride-${CU}-${l.date}.png`;
   link.href = canvas.toDataURL();
   link.click();
   toast('Activity image saved!');
